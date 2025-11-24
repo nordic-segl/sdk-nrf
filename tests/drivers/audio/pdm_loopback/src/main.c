@@ -300,6 +300,21 @@ ZTEST(pdm_loopback, test_pdm_clk_frequency)
 		       PDM_EXPECTED_FREQ * SAMPLING_RATIO / 30,
 		       "Captured incorrect frequency Hz. Captured pulses = %lu, expected = %lu",
 		       pulses, PDM_EXPECTED_FREQ * SAMPLING_RATIO);
+
+	/* Remove GPPI configuration. */
+	nrfx_gppi_conn_disable(gppi_handle);
+	nrfx_gppi_conn_free(eep, tep, gppi_handle);
+
+	/* Remove GPIOTE configuration. */
+	ret = nrfx_gpiote_pin_uninit(gpiote_instance, CLOCK_INPUT_PIN);
+	zexpect_true(ret == 0, "nrfx_gpiote_pin_uninit() ret %d", ret);
+	nrfx_gpiote_trigger_disable(gpiote_instance, CLOCK_INPUT_PIN);
+	ret = nrfx_gpiote_channel_free(gpiote_instance, gpiote_channel);
+	zexpect_true(ret == 0, "nrfx_gpiote_channel_free() ret %d", ret);
+
+	/* Remove NRFX Timer configuration. */
+	nrfx_timer_disable(&timer_instance);
+	nrfx_timer_uninit(&timer_instance);
 }
 
 ZTEST_SUITE(pdm_loopback, NULL, device_setup, setup, teardown, NULL);
