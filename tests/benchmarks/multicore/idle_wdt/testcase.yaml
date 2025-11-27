@@ -3,10 +3,6 @@ common:
   tags:
     - ci_build
     - ci_tests_benchmarks_multicore
-  platform_allow:
-    - nrf54h20dk/nrf54h20/cpuapp
-  integration_platforms:
-    - nrf54h20dk/nrf54h20/cpuapp
 
 tests:
   # cpuapp - idle_wdt test with logging
@@ -23,6 +19,10 @@ tests:
     extra_args:
       - idle_wdt_EXTRA_CONF_FILE=enable_logs.conf
       - remote_EXTRA_CONF_FILE=../enable_logs.conf
+    platform_allow:
+      - nrf54h20dk/nrf54h20/cpuapp
+    integration_platforms:
+      - nrf54h20dk/nrf54h20/cpuapp
 
   # cpuapp - idle_wdt test (idle_retained)
   # cpurad - idle_wdt test (idle)
@@ -37,6 +37,10 @@ tests:
       fixture: ppk_power_measure
       pytest_root:
         - "${CUSTOM_ROOT_TEST_DIR}/test_measure_power_consumption.py::test_measure_and_data_dump_pwm_and_idle"
+    platform_allow:
+      - nrf54h20dk/nrf54h20/cpuapp
+    integration_platforms:
+      - nrf54h20dk/nrf54h20/cpuapp
 
   # cpuapp - idle_wdt test (idle)
   # cpurad - idle_wdt test (idle)
@@ -51,6 +55,10 @@ tests:
       fixture: ppk_power_measure
       pytest_root:
         - "${CUSTOM_ROOT_TEST_DIR}/test_measure_power_consumption.py::test_measure_and_data_dump_pwm_and_idle"
+    platform_allow:
+      - nrf54h20dk/nrf54h20/cpuapp
+    integration_platforms:
+      - nrf54h20dk/nrf54h20/cpuapp
 
   # cpuapp - idle_wdt test (s2ram)
   # cpurad - idle_wdt test (idle)
@@ -61,17 +69,41 @@ tests:
       fixture: ppk_power_measure
       pytest_root:
         - "${CUSTOM_ROOT_TEST_DIR}/test_measure_power_consumption.py::test_measure_and_data_dump_pwm_and_s2ram"
+    platform_allow:
+      - nrf54h20dk/nrf54h20/cpuapp
+    integration_platforms:
+      - nrf54h20dk/nrf54h20/cpuapp
 
   # cpuapp - idle_wdt test (s2ram)
-  # cpurad - remote sleep forever (idle)
+  # cpurad - remote_sleep_forever (idle)
   benchmarks.multicore.idle_wdt.nrf54h20dk_cpuapp.s2ram:
     tags: ppk_power_measure
     extra_args:
       - SB_CONFIG_NETCORE_REMOTE_SLEEP_FOREVER=y
       - idle_wdt_CONFIG_TEST_SYNCHRONIZE_WITH_REMOTE=n
-      - remote_CONFIG_TEST_SYNCHRONIZE_WITH_REMOTE=n
     harness: pytest
     harness_config:
       fixture: ppk_power_measure
       pytest_root:
         - "${CUSTOM_ROOT_TEST_DIR}/test_measure_power_consumption.py::test_measure_and_data_dump_pwm_and_s2ram"
+    platform_allow:
+      - nrf54h20dk/nrf54h20/cpuapp
+    integration_platforms:
+      - nrf54h20dk/nrf54h20/cpuapp
+
+  # cpuapp - empty_app_core (s2ram)
+  # cpurad - idle_wdt test (idle)
+  benchmarks.multicore.idle_wdt.nrf54h20dk_cpurad.s2ram:
+    tags: ppk_power_measure
+    extra_args:
+      - idle_wdt_CONFIG_TEST_SYNCHRONIZE_WITH_REMOTE=n
+      - empty_app_core_EXTRA_CONF_FILE=${ZEPHYR_NRF_MODULE_DIR}/tests/benchmarks/multicore/idle_wdt/empty_app_core.conf
+    harness: pytest
+    harness_config:
+      fixture: ppk_power_measure
+      pytest_root:
+        - "${CUSTOM_ROOT_TEST_DIR}/test_measure_power_consumption.py::test_measure_and_data_dump_pwm_and_s2ram"
+    platform_allow:
+      - nrf54h20dk/nrf54h20/cpurad
+    integration_platforms:
+      - nrf54h20dk/nrf54h20/cpurad
