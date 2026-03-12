@@ -349,6 +349,7 @@ Peripheral samples
         It allows for setting a custom channel sequence for the ``start_tx_sweep_with_sleep`` and ``start_tx_sweep_with_sleep_modulated`` commands.
     * ``print_channel_sequence`` shell command.
         It prints the currently configured channel sequence.
+    * Support for pin debugging of radio events on nRF54L Series devices.
 
 PMIC samples
 ------------
